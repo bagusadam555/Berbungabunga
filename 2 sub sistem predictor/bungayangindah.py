@@ -14,7 +14,7 @@ from sklearn.metrics import mean_squared_error
 from tensorflow.keras.optimizers import Adam
 
 #Load the dataset
-dataset = pandas.read_csv('/content/drive/MyDrive/TA/Bismillah SubSistem2 Kapal1 Percobaan2.csv')
+dataset = pandas.read_csv('2 sub sistem predictor/Bismillah SubSistem2 Kapal1 Percobaan2.csv')
 #DATA PREPROCESSING
 #Fix random seed for reproducibility
 numpy.random.seed(1)
