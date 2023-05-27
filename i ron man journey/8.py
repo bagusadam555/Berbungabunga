@@ -1,4 +1,4 @@
-for i in range (10) :
+for i in range (3) :
     IPK = float(input("Masukkan IPK Anda "))  # Mengubah input menjadi integer (casting = mengubah string jadi integer atau sebaliknya {int(...)})
 #float untuk desimal
 #integer tidak bisa untuk desimal
