@@ -55,7 +55,7 @@ model.add(Dense(4))
 opt=Adam(learning_rate=0.01)
 model.compile(loss='mean_squared_error', optimizer=opt)
 #Fitting the RNN to the training set
-model.fit(trainX, trainY, epochs=2000, batch_size=2)
+model.fit(trainX, trainY, epochs=10, batch_size=2)
 #MAKING THE PREDICTIONS AND VALIDATING THE RESULTS
 actual_data=dataset.iloc[510:720, 2:6].values
 #Input data
@@ -110,6 +110,6 @@ plt.plot(actual_data_kecepatan, color='green', label='Data AIS (Kecepatan) Aktua
 plt.plot(testPredict_kecepatan, color='blue', label='Data AIS (Kecepatan) Hasil Prediksi')
 plt.title('Prediksi Data AIS (Kecepatan) yang Hilang')
 plt.xlabel('Data Hilang ke-')
-plt.ylabel('Kecepatan')
+plt.ylabel('Kecepatan(knots)')
 plt.legend()
 plt.show()
