@@ -25,8 +25,7 @@ C = IT2FS(domain_delHead,
 HO = IT2FS(domain_delHead,
  trapezoid_mf, [174,175,185,186, 1.],
  trapezoid_mf, [150, 155, 160, 165, 1])
-IT2FS_plot(OT, C, HO, legends=["OT", "C", "HO"], 
-filename="delHead")
+IT2FS_plot(OT, C, HO, legends=["OT", "C", "HO"], filename="delHead")
 # delV membership function
 domain_delV = linspace(0, 5, 500)
 kecil = IT2FS(domain_delV,
@@ -38,7 +37,7 @@ besar = IT2FS(domain_delV,
 IT2FS_plot(kecil, besar, legends=["kecil", "besar"], 
 filename="delV")
 # membership function
-domain_IdentificationResult=linspace(0,100,10000);NoTrans = IT2FS(domain_IdentificationResult,
+domain_IdentificationResult=linspace(0,100,10000); NoTrans = IT2FS(domain_IdentificationResult,
  tri_mf,[0,0.01,50,1],
  tri_mf,[0,0.01,40,0.8])
 YesTrans = IT2FS(domain_IdentificationResult,
@@ -83,11 +82,12 @@ myIT2FLS.add_rule([("delD", Far),("delHead", C), ("delV", kecil)],
 # 10
 myIT2FLS.add_rule([("delD", Far),("delHead", C), ("delV", besar)], 
 [("Result", NoTrans)])
-# 11 myIT2FLS.add_rule([("delD", Far),("delHead", HO), ("delV", kecil)], [("Result", YesTrans)])
+# 11 
+myIT2FLS.add_rule([("delD", Far),("delHead", HO), ("delV", kecil)], [("Result", YesTrans)])
 # 12
 myIT2FLS.add_rule([("delD", Far),("delHead", HO), ("delV", 
 besar)], [("Result", YesTrans)])
-it2out, tr=myIT2FLS.evaluate({"delD":_, "delHead":_, "delV":_}, 
+it2out, tr=myIT2FLS.evaluate({"delD":0.000003, "delHead":0, "delV":0}, 
 min_t_norm,max_s_norm, domain_IdentificationResult,
  method="Centroid", algorithm="KM")
 it2out["Result"].plot(filename="hasil selection")

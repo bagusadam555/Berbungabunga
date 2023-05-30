@@ -12,11 +12,12 @@ from keras.layers import Dropout
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 from tensorflow.keras.optimizers import Adam
+import os
 
 def sistem_predictor_losses_data(namafile):
  
     #Load the dataset
-    dataset = pandas.read_csv(f'sub2/{namafile}')
+    dataset = pandas.read_csv(namafile)
     #DATA PREPROCESSING
     #Fix random seed for reproducibility
     numpy.random.seed(1)
@@ -57,7 +58,7 @@ def sistem_predictor_losses_data(namafile):
     opt=Adam(learning_rate=0.01)
     model.compile(loss='mean_squared_error', optimizer=opt)
     #Fitting the RNN to the training set
-    model.fit(trainX, trainY, epochs=2000, batch_size=2)
+    model.fit(trainX, trainY, epochs=10, batch_size=2)
     #MAKING THE PREDICTIONS AND VALIDATING THE RESULTS
     actual_data=dataset.iloc[510:720, 2:6].values
     #Input data
@@ -83,19 +84,26 @@ def sistem_predictor_losses_data(namafile):
     print(mape)
     # Create a xlsx
     import xlsxwriter
-    workbook = xlsxwriter.Workbook('sub2/hasil prediktor.xlsx')
+    import io
+    directory = 'sub2'
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    # Saving the Excel file
+    excel_file_path = os.path.join(directory, 'hasil_prediktor.xlsx')
+    workbook = xlsxwriter.Workbook(excel_file_path)
     worksheet = workbook.add_worksheet()
-    row=0
-    col=0
+    row = 0
+    col = 0
     for Latitude, Longitude, Heading, Kecepatan in (testPredict):
-        worksheet.write(row,col, Latitude)
-        worksheet.write(row,col+1, Longitude)
-        worksheet.write(row,col+2, Heading)
-        worksheet.write(row,col+3, Kecepatan)
+        worksheet.write(row, col, Latitude)
+        worksheet.write(row, col + 1, Longitude)
+        worksheet.write(row, col + 2, Heading)
+        worksheet.write(row, col + 3, Kecepatan)
         row += 1
     workbook.close()
-    #Visualising the results
-    #Heading
+
+    # Generating the plots
+    # Heading
     actual_data_heading = actual_data[0:210, 2:3]
     testPredict_heading = testPredict[0:210, 2:3]
     plt.plot(actual_data_heading, color='green', label='Data AIS (Heading)Aktual')
@@ -104,14 +112,27 @@ def sistem_predictor_losses_data(namafile):
     plt.xlabel('Data Hilang ke-')
     plt.ylabel('Heading')
     plt.legend()
-    plt.show()
-    #Kecepatan
+
+    # Saving the plot as an image in memory
+    plot_image = io.BytesIO()
+    plt.savefig(plot_image, format='png')
+    plot_image.seek(0)
+    plt.close()
+
+    # Kecepatan
     actual_data_kecepatan = actual_data[0:210, 3:4]
     testPredict_kecepatan = testPredict[0:210, 3:4]
     plt.plot(actual_data_kecepatan, color='green', label='Data AIS (Kecepatan) Aktual')
     plt.plot(testPredict_kecepatan, color='blue', label='Data AIS (Kecepatan) Hasil Prediksi')
     plt.title('Prediksi Data AIS (Kecepatan) yang Hilang')
     plt.xlabel('Data Hilang ke-')
-    plt.ylabel('Kecepatan(knots)')
+    plt.ylabel('Kecepatan (knots)')
     plt.legend()
-    plt.show()
+
+    # Saving the plot as an image in memory
+    plot_image2 = io.BytesIO()
+    plt.savefig(plot_image2, format='png')
+    plot_image2.seek(0)
+    plt.close()
+    return workbook,plot_image,plot_image2
+
