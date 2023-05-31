@@ -1,6 +1,9 @@
 #Importing the libraries and all of the functions
 import pandas
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import base64
 import random
 import tensorflow as tf
 import numpy
@@ -13,6 +16,8 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 from tensorflow.keras.optimizers import Adam
 import os
+import xlsxwriter
+import io
 
 def sistem_predictor_losses_data(namafile):
  
@@ -58,7 +63,7 @@ def sistem_predictor_losses_data(namafile):
     opt=Adam(learning_rate=0.01)
     model.compile(loss='mean_squared_error', optimizer=opt)
     #Fitting the RNN to the training set
-    model.fit(trainX, trainY, epochs=10, batch_size=2)
+    model.fit(trainX, trainY, epochs=3, batch_size=2)
     #MAKING THE PREDICTIONS AND VALIDATING THE RESULTS
     actual_data=dataset.iloc[510:720, 2:6].values
     #Input data
@@ -83,8 +88,6 @@ def sistem_predictor_losses_data(namafile):
     mape=numpy.abs((actual_data-testPredict)/actual_data).mean(axis=0)*100
     print(mape)
     # Create a xlsx
-    import xlsxwriter
-    import io
     directory = 'sub2'
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -117,6 +120,7 @@ def sistem_predictor_losses_data(namafile):
     plot_image = io.BytesIO()
     plt.savefig(plot_image, format='png')
     plot_image.seek(0)
+    plot_image_jpgData = base64.b64encode(plot_image.read()).decode("utf-8")
     plt.close()
 
     # Kecepatan
@@ -133,6 +137,7 @@ def sistem_predictor_losses_data(namafile):
     plot_image2 = io.BytesIO()
     plt.savefig(plot_image2, format='png')
     plot_image2.seek(0)
+    plot_image2_jpgData = base64.b64encode(plot_image2.read()).decode("utf-8")
     plt.close()
-    return workbook,plot_image,plot_image2
+    return workbook,plot_image_jpgData,plot_image2_jpgData
 
