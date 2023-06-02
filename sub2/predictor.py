@@ -47,8 +47,7 @@ def sistem_predictor_losses_data(namafile):
     model = Sequential()
     #Adding the input layer, the first LSTM layer and some Dropout regularisation
     #Jumlah unit neuron LSTM= 1, 5, 10, 20, 25
-    model.add(LSTM(25, return_sequences=False, input_shape=(trainX.shape[1]
-    ,4)))
+    model.add(LSTM(25, return_sequences=False, input_shape=(trainX.shape[1],4)))
     model.add(Dropout(0.2))
     #Adding the output layer
     model.add(Dense(4))
@@ -57,7 +56,8 @@ def sistem_predictor_losses_data(namafile):
     opt=Adam(learning_rate=0.01)
     model.compile(loss='mean_squared_error', optimizer=opt)
     #Fitting the RNN to the training set
-    model.fit(trainX, trainY, epochs=2000, batch_size=2)
+    model.fit(trainX, trainY, epochs=10, batch_size=2)
+    
     #MAKING THE PREDICTIONS AND VALIDATING THE RESULTS
     actual_data=dataset.iloc[510:720, 2:6].values
     #Input data
@@ -94,7 +94,7 @@ def sistem_predictor_losses_data(namafile):
         worksheet.write(row,col+3, Kecepatan)
         row += 1
     workbook.close()
-    #Visualising the results
+    #Visualising the results/plot
     #Heading
     actual_data_heading = actual_data[0:210, 2:3]
     testPredict_heading = testPredict[0:210, 2:3]

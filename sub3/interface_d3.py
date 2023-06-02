@@ -9,7 +9,6 @@ df = pd.read_csv('C:/Users/ASUS/Documents/GitHub/Berbungabunga/sub3/ujid3.csv')
 
 
 for i in range(2):
-    
     jarak = df.iloc[i, 0]
     heading = df.iloc[i, 1]
     kecepatan = df.iloc[i, 2]

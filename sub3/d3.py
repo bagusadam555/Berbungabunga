@@ -34,8 +34,7 @@ kecil = IT2FS(domain_delV,
 besar = IT2FS(domain_delV,
  trapezoid_mf, [0.55, 4.7, 4.99, 5, 1],
  tri_mf, [0.35, 4.5, 4.71, 1])
-IT2FS_plot(kecil, besar, legends=["kecil", "besar"], 
-filename="delV")
+IT2FS_plot(kecil, besar, legends=["kecil", "besar"], filename="delV")
 # membership function
 domain_IdentificationResult=linspace(0,100,10000); NoTrans = IT2FS(domain_IdentificationResult,
  tri_mf,[0,0.01,50,1],
