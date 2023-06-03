@@ -56,7 +56,7 @@ def sistem_predictor_losses_data(namafile):
     opt=Adam(learning_rate=0.01)
     model.compile(loss='mean_squared_error', optimizer=opt)
     #Fitting the RNN to the training set
-    model.fit(trainX, trainY, epochs=10, batch_size=2)
+    model.fit(trainX, trainY, epochs=2000, batch_size=2)
     
     #MAKING THE PREDICTIONS AND VALIDATING THE RESULTS
     actual_data=dataset.iloc[510:720, 2:6].values
