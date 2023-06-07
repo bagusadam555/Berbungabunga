@@ -17,12 +17,16 @@ def sistem_predictor_losses_data(namafile):
  
     #Load the dataset
     dataset = pandas.read_csv(f'sub2/{namafile}')
+
     #DATA PREPROCESSING
     #Fix random seed for reproducibility
+
     numpy.random.seed(1)
     random.seed(1)
     tf.random.set_seed(1)
+
     #Importing the training set
+    
     dataset_train = dataset.iloc[0:510, 2:6].values
     #Normalize the dataset
     scaler = MinMaxScaler(feature_range=(0, 1))
@@ -56,7 +60,7 @@ def sistem_predictor_losses_data(namafile):
     opt=Adam(learning_rate=0.01)
     model.compile(loss='mean_squared_error', optimizer=opt)
     #Fitting the RNN to the training set
-    model.fit(trainX, trainY, epochs=2000, batch_size=2)
+    model.fit(trainX, trainY, epochs=30, batch_size=2)
     
     #MAKING THE PREDICTIONS AND VALIDATING THE RESULTS
     actual_data=dataset.iloc[510:720, 2:6].values

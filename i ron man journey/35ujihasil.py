@@ -32,9 +32,9 @@ HO = IT2FS(domainBedaHeading,
 IT2FS_plot(OT, C, HO, legends=["OT", "C", "HO"], filename="BedaHeading")
 
 #BedaKecepatan membership function
-domainBedaKecepatan= linspace(0., 20, 2000)
+domainBedaKecepatan= linspace(-1., 20, 2000)
 Kecil = IT2FS(domainBedaKecepatan,
- trapezoid_mf, [0,   0.3,   3.3,   3.5, 1.],
+ trapezoid_mf, [-1,   0,   3.3,   3.5, 1.],
  trapezoid_mf, [0.1, 0.33, 3.23, 3.45, 0.1])
 Besar = IT2FS(domainBedaKecepatan,
  trapezoid_mf, [2.5, 3.6, 18, 20, 1.],
@@ -74,3 +74,240 @@ YesTrans = IT2FS(domainKeputusan,
  tri_mf,[  50,  85,  99,0.1])
 IT2FS_plot(NoTrans,YesTrans,legends=["NoTrans","YesTrans"],filename="HasilKeputusan")
 
+# An Interval Type 2 Fuzzy Logic System is created. The variables and output 
+
+# variables are defined. As it can be seen, the system has 5 input and 1 output 
+
+myIT2FLS = IT2FLS()
+myIT2FLS.add_input_variable("Jarak") 
+myIT2FLS.add_input_variable("BedaHeading") 
+myIT2FLS.add_input_variable("BedaKecepatan") 
+myIT2FLS.add_input_variable("KecepatanAngin") 
+myIT2FLS.add_input_variable("CurahHujan")
+myIT2FLS.add_output_variable("HasilKeputusan")
+
+# the fuzzy IF-THEN rules
+# 1 
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", YesTrans)])
+# 2
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", YesTrans)])
+# 3
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 4
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 5
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 6
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 7
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 8
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 9
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 10
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 11 
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 12
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 13
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 14
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 15
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 16
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 17
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 18
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 19
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 20
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 21
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 22
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 23
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 24
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 25
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", HO), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", YesTrans)])
+# 26
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", HO), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", YesTrans)])
+# 27
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", HO), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 28
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", HO), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 29
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", HO), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 30
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", HO), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 31
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", HO), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 32
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", HO), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 33
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", HO), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 34
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", HO), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 35
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", HO), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 36
+myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", HO), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 37 
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", OT), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", YesTrans)])
+# 38
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", OT), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", YesTrans)])
+# 39
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", OT), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 40
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", OT), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 41
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", OT), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 42
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", OT), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 43
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", OT), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 44
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", OT), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 45
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", OT), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 46
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", OT), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 47 
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", OT), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 48
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", OT), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 49
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", C), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 50
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", C), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 51
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", C), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 52
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", C), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 53
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", C), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 54
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", C), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 55
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", C), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 56
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", C), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 57
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", C), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 58
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", C), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 59
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", C), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 60
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", C), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 61
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", HO), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", YesTrans)])
+# 62
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", HO), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", YesTrans)])
+# 63
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", HO), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 64
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", HO), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 65
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", HO), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 66
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", HO), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 67
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", HO), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 68
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", HO), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 69
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", HO), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+# 70
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", HO), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", CR)], 
+                  [("HasilKeputusan", NoTrans)])
+# 71
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", HO), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", HS)], 
+                  [("HasilKeputusan", NoTrans)])
+# 72
+myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", HO), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("CurahHujan", HL)], 
+                  [("HasilKeputusan", NoTrans)])
+
+it2out, tr=myIT2FLS.evaluate({"Jarak":0.0000000003, "BedaHeading":-1, "BedaKecepatan": 0,"KecepatanAngin":5,"CurahHujan":130}, 
+min_t_norm,max_s_norm, domainKeputusan,
+ method="Centroid", algorithm="KM")
+
+it2out["HasilKeputusan"].plot(filename="hasil Identifikasi IUU")
+TR_plot(domainKeputusan, tr["HasilKeputusan"], filename="hasil Identifikasi IUU")
+print((crisp(tr["HasilKeputusan"])))

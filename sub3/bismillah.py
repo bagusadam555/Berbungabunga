@@ -32,9 +32,9 @@ HO = IT2FS(domainBedaHeading,
 IT2FS_plot(OT, C, HO, legends=["OT", "C", "HO"], filename="BedaHeading")
 
 #BedaKecepatan membership function
-domainBedaKecepatan= linspace(0., 20, 2000)
+domainBedaKecepatan= linspace(-1., 20, 2000)
 Kecil = IT2FS(domainBedaKecepatan,
- trapezoid_mf, [0,   0.3,   3.3,   3.5, 1.],
+ trapezoid_mf, [-1,   0,   3.3,   3.5, 1.],
  trapezoid_mf, [0.1, 0.33, 3.23, 3.45, 0.1])
 Besar = IT2FS(domainBedaKecepatan,
  trapezoid_mf, [2.5, 3.6, 18, 20, 1.],
