@@ -9,10 +9,11 @@ def SubsistemIdentifikasiLossesDataAIS(TipeKapal, NamaExcel):
     # Data isi excel yang berbaris2 dan berkolom2 dinamakan variabel DataPerjalananKapal dengan menggunakan DataIsiExcel.values
     DataPerjalananKapal = DataIsiExcel.values
 
-    #kondisi awal program
-    losses_data = False  # Inisialisasi variabel losses_data
-    total_losses_data = 0  # Inisialisasi variabel total_losses_data
+    # Kondisi awal variabel losses_data dan variabel total_losses_data dalam program
+    losses_data = False  
+    total_losses_data = 0  
 
+    # Mengatur cara kerja perhitungan selisih waktu
     for i in range(len(DataPerjalananKapal)-1):
         timenow_hari = DataPerjalananKapal[i][1].replace("/", ":")
         timenow_gabungan = f"{timenow_hari}:{DataPerjalananKapal[i][2]}"
@@ -26,15 +27,19 @@ def SubsistemIdentifikasiLossesDataAIS(TipeKapal, NamaExcel):
 
         if int(deltatime.total_seconds()) >= 7200:
             print(f'Ya, kapal {TipeKapal} terjadi losses data AIS selama: {deltatime} dan terindikasi melakukan IUU transshipment')
+            #kondisi losses_data = true, maka total losses_data ditambahkan ke kondisi awal tadi
             losses_data = True
             total_losses_data += int(deltatime.total_seconds())
         elif 360 < deltatime.total_seconds() < 7200:
             print(f'Ya, kapal {TipeKapal} terjadi losses data AIS selama: {deltatime} tetapi tidak terindikasi melakukan IUU transshipment')
+            #kondisi losses_data = true, maka total losses_data ditambahkan ke kondisi awal tadi
             losses_data = True
             total_losses_data += int(deltatime.total_seconds())
         else:
             print(f'Kapal {TipeKapal} tidak terjadi losses data AIS dan tidak terindikasi melakukan IUU transshipment')
 
+
+    # Membuat kesimpulan
     if losses_data:
         hours = total_losses_data // 3600
         minutes = (total_losses_data % 3600) // 60

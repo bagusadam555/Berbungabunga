@@ -12,6 +12,8 @@ from keras.layers import Dropout
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.models import load_model
+from tensorflow.keras.callbacks import EarlyStopping
 
 def sistem_predictor_losses_data(namafile,trainingulang):
  
@@ -45,26 +47,51 @@ def sistem_predictor_losses_data(namafile,trainingulang):
     #Reshape
     #Need to convert the array to a 3 dimension to be able to permit it into the RNN
     trainX = numpy.reshape(trainX, (trainX.shape[0],trainX.shape[1],4))
-    #BUILDING THE RNN
-    #Create and fit the LSTM network
-    #Initialising the RNN
+    # Split the dataset into train and validation sets
+    val_size = int(len(trainX) * 0.2)
+    valX = trainX[-val_size:]
+    valY = trainY[-val_size:]
+    trainX = trainX[:-val_size]
+    trainY = trainY[:-val_size]
+    
+    # Building the RNN
     model = Sequential()
-    #Adding the input layer, the first LSTM layer and some Dropout regularisation
-    #Jumlah unit neuron LSTM= 1, 5, 10, 20, 25
-    model.add(LSTM(25, return_sequences=False, input_shape=(trainX.shape[1],4)))
+    model.add(LSTM(25, return_sequences=False, input_shape=(trainX.shape[1], 4)))
     model.add(Dropout(0.2))
-    #Adding the output layer
     model.add(Dense(4))
-    #Compiling the RNN
-    #Learning rate= 0.001, 0.005, 0.01, 0.1
-    opt=Adam(learning_rate=0.01)
-    model.compile(loss='mean_squared_error', optimizer=opt)
-    #Fitting the RNN to the training set
-    if trainingulang==True:
-        model.fit(trainX, trainY, epochs=30, batch_size=2)
+
+    # Compiling the RNN
+    opt = Adam(learning_rate=0.01)
+    model.compile(loss='mean_absolute_error', optimizer=opt, metrics=['accuracy'])
+
+    # Early stopping callback
+    #callback = EarlyStopping(monitor='val_accuracy', patience=3, mode='max', baseline=0.9)
+
+    # Fitting the RNN to the training set
+    import matplotlib.pyplot as plt
+    if trainingulang == False:
+        history = model.fit(trainX, trainY, epochs=50, batch_size=2,  validation_data=(valX, valY))#callbacks=[callback],
         model.save("adam.h5")
+        print(f"ini dia {history}")
+
+        # Plotting accuracy
+        plt.plot(history.history['accuracy'])
+        plt.plot(history.history['val_accuracy'])
+        plt.title('Model Accuracy')
+        plt.xlabel('Epoch')
+        plt.ylabel('Accuracy')
+        plt.legend(['Train', 'Validation'], loc='upper left')
+        plt.show()
+
+        # Plotting loss
+        plt.plot(history.history['loss'])
+        plt.plot(history.history['val_loss'])
+        plt.title('Model Loss')
+        plt.xlabel('Epoch')
+        plt.ylabel('Loss')
+        plt.legend(['Train', 'Validation'], loc='upper right')
+        plt.show()
     else:
-        from tensorflow.keras.models import load_model
         model = load_model("adam.h5")
     
     #MAKING THE PREDICTIONS AND VALIDATING THE RESULTS
@@ -86,7 +113,7 @@ def sistem_predictor_losses_data(namafile,trainingulang):
     testPredict=scaler.inverse_transform(testPredict)
     #Calculate root mean squared error
     testScore=math.sqrt(mean_squared_error(actual_data,testPredict))
-    print('Test Score (RMSE)=', testScore)
+    print('Test Score (MAE)=', testScore)
     #Evaluating
     mape=numpy.abs((actual_data-testPredict)/actual_data).mean(axis=0)*100
     print(mape)

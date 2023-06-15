@@ -1,4 +1,4 @@
-from predictor_coba import sistem_predictor_losses_data 
+from aprediktorempat import sistem_predictor_losses_data 
 
  
 data = input("Masukkan nama Excel: ") 
