@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 import pandas
-#Defining an interval type 2 fuzzy set with trapzeoidal mf
+#Defining an interval type 2 fuzzy set with trapzeoidal and tringular mf
+
 
 #Jarak membership function
 domainJarak= linspace(0.,700, 7000)
@@ -236,6 +237,7 @@ myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", HO), ("BedaKecepatan", Besar
 
 
 
+
 def hasilidentifikasiiuu(NamaExcel):
     # Membuat program dapat membaca isi excel yang diinput melalui NamaExcel
     DataIsiExcel = pandas.read_csv(NamaExcel)
@@ -248,11 +250,11 @@ def hasilidentifikasiiuu(NamaExcel):
         BedaHeading = DataPerjalananKapal[i][5]
         BedaKecepatan = DataPerjalananKapal[i][5]
         KecepatanAngin = DataPerjalananKapal[i][5]
-        CurahHujan = DataPerjalananKapal[i][5]
+        JarakPandang = DataPerjalananKapal[i][5]
         it2out, tr=myIT2FLS.evaluate({"Jarak":jarak, "BedaHeading":BedaHeading,
                                        "BedaKecepatan":BedaKecepatan,
                                        "KecepatanAngin":KecepatanAngin,
-                                       "CurahHujan":CurahHujan}, min_t_norm,max_s_norm,
+                                       "JarakPandang":JarakPandang}, min_t_norm,max_s_norm,
                                        domainKeputusan,method="Centroid", algorithm="KM")
         #it2out["HasilKeputusan"].plot(filename="hasil Identifikasi IUU")
         #TR_plot(domainKeputusan, tr["HasilKeputusan"], filename="hasil Identifikasi IUU")
