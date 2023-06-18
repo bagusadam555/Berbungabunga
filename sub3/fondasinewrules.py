@@ -4,8 +4,9 @@ from mpl_toolkits import mplot3d
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
-import pandas
-#Defining an interval type 2 fuzzy set with trapzeoidal mf
+
+#Defining an interval type 2 fuzzy set with trapzeoidal and tringular mf
+
 
 
 #Jarak membership function
@@ -236,25 +237,11 @@ myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", HO), ("BedaKecepatan", Besar
                   [("HasilKeputusan", NoTrans)])
 
 
-def hasilidentifikasiiuu(NamaExcel):
-    # Membuat program dapat membaca isi excel yang diinput melalui NamaExcel
-    DataIsiExcel = pandas.read_csv(NamaExcel)
-    # Data isi excel yang berbaris2 dan berkolom2 dinamakan variabel DataPerjalananKapal dengan menggunakan DataIsiExcel.values
-    DataPerjalananKapal = DataIsiExcel.values
-    
-    # Mengatur cara kerja perhitungan selisih waktu
-    for i in range(len(DataPerjalananKapal)-1):
-        jarak = DataPerjalananKapal[i][3]
-        BedaHeading = DataPerjalananKapal[i][4]
-        BedaKecepatan = DataPerjalananKapal[i][5]
-        KecepatanAngin = DataPerjalananKapal[i][6]
-        JarakPandang = DataPerjalananKapal[i][7]
-        it2out, tr=myIT2FLS.evaluate({"Jarak":jarak, "BedaHeading":BedaHeading,
-                                       "BedaKecepatan":BedaKecepatan,
-                                       "KecepatanAngin":KecepatanAngin,
-                                       "JarakPandang":JarakPandang}, min_t_norm,max_s_norm,
-                                       domainKeputusan,method="Centroid", algorithm="KM")
-        #it2out["HasilKeputusan"].plot(filename="hasil Identifikasi IUU")
-        #TR_plot(domainKeputusan, tr["HasilKeputusan"], filename="hasil Identifikasi IUU")
-        hasil = ((crisp(tr["HasilKeputusan"])))
-        print(hasil)
+
+it2out, tr=myIT2FLS.evaluate({"Jarak":5, "BedaHeading":0, "BedaKecepatan":2,"KecepatanAngin":5,"JarakPandang":5}, 
+min_t_norm,max_s_norm, domainKeputusan,
+ method="Centroid", algorithm="KM")
+
+it2out["HasilKeputusan"].plot(filename="hasil Identifikasi IUU")
+TR_plot(domainKeputusan, tr["HasilKeputusan"], filename="hasil Identifikasi IUU")
+print((crisp(tr["HasilKeputusan"])))
