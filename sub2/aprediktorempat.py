@@ -13,7 +13,6 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import load_model
-from tensorflow.keras.callbacks import EarlyStopping
 
 def sistem_predictor_losses_data(namafile,trainingulang):
  
@@ -22,7 +21,6 @@ def sistem_predictor_losses_data(namafile,trainingulang):
 
     #DATA PREPROCESSING
     #Fix random seed for reproducibility
-
     numpy.random.seed(1)
     random.seed(1)
     tf.random.set_seed(1)
@@ -64,8 +62,6 @@ def sistem_predictor_losses_data(namafile,trainingulang):
     opt = Adam(learning_rate=0.01)
     model.compile(loss='mean_absolute_error', optimizer=opt, metrics=['accuracy'])
 
-    # Early stopping callback
-    #callback = EarlyStopping(monitor='val_accuracy', patience=3, mode='max', baseline=0.9)
 
     # Fitting the RNN to the training set
     import matplotlib.pyplot as plt

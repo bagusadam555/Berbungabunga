@@ -1,15 +1,14 @@
 from pyit2fls import Mamdani, rtri_mf,ltri_mf,IT2FS, IT2FLS, trapezoid_mf, tri_mf, IT2FS_plot, min_t_norm, max_s_norm, TR_plot, crisp
 from numpy import linspace, meshgrid, zeros
-from mpl_toolkits import mplot3d
+from mpl_toolkits import mplot3d 
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
-import pandas
-#Defining an interval type 2 fuzzy set with trapzeoidal mf
 
+#Defining an interval type 2 fuzzy set with trapzeoidal and tringular mf
 
 #Jarak membership function
-domainJarak= linspace(0.,700, 7000)
+domainJarak= linspace(0,700, 7000)
 Dekat = IT2FS(domainJarak,
  trapezoid_mf, [0, 2,   16,   18, 1.],
  trapezoid_mf, [1, 5, 12, 17, 0.5])
@@ -71,9 +70,7 @@ YesTrans = IT2FS(domainKeputusan,
  tri_mf,[  50,  85,  99,0.55])
 IT2FS_plot(NoTrans,YesTrans,legends=["NoTrans","YesTrans"],filename="HasilKeputusan")
 
-# An Interval Type 2 Fuzzy Logic System is created. The variables and output 
-
-# variables are defined. As it can be seen, the system has 5 input and 1 output 
+# An Interval Type 2 Fuzzy Logic System is created. The input variables and output variable are defined. As it can be seen, the system has 5 input and 1 output 
 
 myIT2FLS = IT2FLS()
 myIT2FLS.add_input_variable("Jarak") 
@@ -88,13 +85,11 @@ myIT2FLS.add_output_variable("HasilKeputusan")
 myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("JarakPandang", J)], 
                   [("HasilKeputusan", YesTrans)])
 # 2
-
 myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("JarakPandang", TJ)], 
                   [("HasilKeputusan", YesTrans)])
 # 3
 myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("JarakPandang", J)], 
                   [("HasilKeputusan", NoTrans)])
-
 # 4
 myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("JarakPandang", TJ)], 
                   [("HasilKeputusan", NoTrans)])
@@ -102,20 +97,17 @@ myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Keci
 myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("JarakPandang", J)], 
                   [("HasilKeputusan", NoTrans)])
 # 6
-
 myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Besar), ("KecepatanAngin", LowRisk), ("JarakPandang", TJ)], 
                   [("HasilKeputusan", NoTrans)])
 # 7
 myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("JarakPandang", J)], 
                   [("HasilKeputusan", NoTrans)])
-
 # 8
 myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", OT), ("BedaKecepatan", Besar), ("KecepatanAngin", HighRisk), ("JarakPandang", TJ)], 
                   [("HasilKeputusan", NoTrans)])
 # 9
 myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("JarakPandang", J)], 
                   [("HasilKeputusan", NoTrans)])
-
 # 10
 myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Kecil), ("KecepatanAngin", LowRisk), ("JarakPandang", TJ)], 
                   [("HasilKeputusan", NoTrans)])
@@ -123,7 +115,6 @@ myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Kecil
 myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("JarakPandang", J)], 
                   [("HasilKeputusan", NoTrans)])
 # 12
-
 myIT2FLS.add_rule([("Jarak", Dekat), ("BedaHeading", C), ("BedaKecepatan", Kecil), ("KecepatanAngin", HighRisk), ("JarakPandang", TJ)], 
                   [("HasilKeputusan", NoTrans)])
 # 13
@@ -236,25 +227,11 @@ myIT2FLS.add_rule([("Jarak", Jauh), ("BedaHeading", HO), ("BedaKecepatan", Besar
                   [("HasilKeputusan", NoTrans)])
 
 
-def hasilidentifikasiiuu(NamaExcel):
-    # Membuat program dapat membaca isi excel yang diinput melalui NamaExcel
-    DataIsiExcel = pandas.read_csv(NamaExcel)
-    # Data isi excel yang berbaris2 dan berkolom2 dinamakan variabel DataPerjalananKapal dengan menggunakan DataIsiExcel.values
-    DataPerjalananKapal = DataIsiExcel.values
 
-    # Mengatur cara kerja perhitungan selisih waktu
-    for i in range(len(DataPerjalananKapal)-1):
-        jarak = DataPerjalananKapal[i][3]
-        BedaHeading = DataPerjalananKapal[i][4]
-        BedaKecepatan = DataPerjalananKapal[i][5]
-        KecepatanAngin = DataPerjalananKapal[i][6]
-        JarakPandang = DataPerjalananKapal[i][7]
-        it2out, tr=myIT2FLS.evaluate({"Jarak":jarak, "BedaHeading":BedaHeading,
-                                       "BedaKecepatan":BedaKecepatan,
-                                       "KecepatanAngin":KecepatanAngin,
-                                       "JarakPandang":JarakPandang}, min_t_norm,max_s_norm,
-                                       domainKeputusan,method="Centroid", algorithm="KM")
-        #it2out["HasilKeputusan"].plot(filename="hasil Identifikasi IUU")
-        #TR_plot(domainKeputusan, tr["HasilKeputusan"], filename="hasil Identifikasi IUU")
-        hasil = ((crisp(tr["HasilKeputusan"])))
-        print(hasil)
+it2out, tr=myIT2FLS.evaluate({"Jarak":17, "BedaHeading":180, "BedaKecepatan":0,"KecepatanAngin":2,"JarakPandang":7}, 
+min_t_norm,max_s_norm, domainKeputusan,
+ method="Centroid", algorithm="KM")
+
+it2out["HasilKeputusan"].plot(filename="hasil Identifikasi IUU")
+TR_plot(domainKeputusan, tr["HasilKeputusan"], filename="hasil Identifikasi IUU")
+print((crisp(tr["HasilKeputusan"])))

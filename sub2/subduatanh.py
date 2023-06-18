@@ -13,10 +13,9 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import load_model
-from tensorflow.keras.callbacks import EarlyStopping
 from keras.activations import tanh
 
-def sistem_predictor_losses_data(namafile, trainingulang):
+def sistem_predictor_losses_data(namafile, pilihan):
  
     # Memuat dataset
     dataset = pandas.read_csv(f'sub2/{namafile}')
@@ -28,7 +27,7 @@ def sistem_predictor_losses_data(namafile, trainingulang):
 
     # Mengimpor data latih
     dataset_train = dataset.iloc[0:510, 2:6].values
-    scaler = MinMaxScaler(feature_range=(0, 1))
+    scaler = MinMaxScaler(feature_range=(-1, 1))
     dataset_train_scaled = scaler.fit_transform(dataset_train)
     trainX, trainY = [], []
     for i in range(5, 510):
@@ -42,21 +41,20 @@ def sistem_predictor_losses_data(namafile, trainingulang):
     trainX = trainX[:-val_size]
     trainY = trainY[:-val_size]
     
-    # Membangun model RNN
+    # Membangun model RNN (variasi unit neuron LSTM 5,18,25)
     model = Sequential()
-    model.add(LSTM(25, return_sequences=False, input_shape=(trainX.shape[1], 4)))
+    model.add(LSTM(18, return_sequences=False, input_shape=(trainX.shape[1], 4)))
     model.add(Dropout(0.2))
     model.add(Dense(4, activation=tanh))
 
-    # Mengompilasi model RNN
+    # Mengompilasi model RNN(variasi learning rate : 0.001, 0.01, 0.1)
     opt = Adam(learning_rate=0.01)
     model.compile(loss='mean_absolute_error', optimizer=opt, metrics=['accuracy'])
 
-    # Early stopping callback
-    #callback = EarlyStopping(monitor='val_accuracy', patience=3, mode='max', baseline=0.9)
+
 
     # Melatih model RNN
-    if trainingulang == False:
+    if pilihan == False:
         history = model.fit(trainX, trainY, epochs=50, batch_size=2, validation_data=(valX, valY))
         model.save("adam.h5")
         print(f"Ini dia {history}")
@@ -96,6 +94,7 @@ def sistem_predictor_losses_data(namafile, trainingulang):
     print('Skor Test (MAE) =', testScore)
     mape = numpy.abs((actual_data - testPredict) / actual_data).mean(axis=0) * 100
     print(mape)
+
     import xlsxwriter
     workbook = xlsxwriter.Workbook('sub2/hasil prediktor.xlsx')
     worksheet = workbook.add_worksheet()
@@ -113,7 +112,7 @@ def sistem_predictor_losses_data(namafile, trainingulang):
     actual_data_heading = actual_data[0:210, 2:3]
     testPredict_heading = testPredict[0:210, 2:3]
     plt.plot(actual_data_heading, color='green', label='Data AIS (Heading) Aktual')
-    plt.plot(testPredict_heading, color='blue', label='Data AIS (Heading) Hasil Prediksi')
+    plt.plot(testPredict_heading, color='yellow', label='Data AIS (Heading) Hasil Prediksi')
     plt.title('Prediksi Data AIS (Heading) yang Hilang')
     plt.xlabel('Data Hilang ke-')
     plt.ylabel('Heading')
@@ -123,7 +122,7 @@ def sistem_predictor_losses_data(namafile, trainingulang):
     actual_data_kecepatan = actual_data[0:210, 3:4]
     testPredict_kecepatan = testPredict[0:210, 3:4]
     plt.plot(actual_data_kecepatan, color='green', label='Data AIS (Kecepatan) Aktual')
-    plt.plot(testPredict_kecepatan, color='blue', label='Data AIS (Kecepatan) Hasil Prediksi')
+    plt.plot(testPredict_kecepatan, color='yellow', label='Data AIS (Kecepatan) Hasil Prediksi')
     plt.title('Prediksi Data AIS (Kecepatan) yang Hilang')
     plt.xlabel('Data Hilang ke-')
     plt.ylabel('Kecepatan (knots)')

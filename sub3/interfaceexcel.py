@@ -1,4 +1,4 @@
-from final import hasilidentifikasiiuu
+from excel import hasilidentifikasiiuu
 
 
 data=input("masukan nama excel : ")
